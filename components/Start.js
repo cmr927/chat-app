@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-    StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity,
+    StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView
 } from "react-native";
 
 // Define the Start component
@@ -72,6 +72,7 @@ const Start = ({ navigation }) => {
                     </Text>
 
                 </TouchableOpacity>
+                {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
             </View>
         </ImageBackground>
     );
