@@ -30,15 +30,24 @@ const Start = ({ navigation }) => {
                     <View style={styles.colorButtonsContainer}>
                         {/* Render a TouchableOpacity for each color option */}
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, black"
+                            accessibilityHint="Choose chat background color, black"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#090C08" },
                                 background === "#090C08" && styles.selectedColor,
                             ]}
+
                             // Set the function to handle button press
                             onPress={() => setBackground("#090C08")}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, dark purple"
+                            accessibilityHint="Choose chat background color, dark purple"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#474056" },
@@ -47,6 +56,10 @@ const Start = ({ navigation }) => {
                             onPress={() => setBackground("#474056")}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, blue-gray"
+                            accessibilityHint="Choose chat background color, blue-gray"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#8A95A5" },
@@ -55,6 +68,10 @@ const Start = ({ navigation }) => {
                             onPress={() => setBackground("#8A95A5")}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, light green"
+                            accessibilityHint="Choose chat background color, light green"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#B9C6AE" },
