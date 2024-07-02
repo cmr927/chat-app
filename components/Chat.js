@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Platform, KeyboardAvoidingView, Text } from 'react-native';
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
 
 const Chat = ({ route, navigation }) => {
     const [messages, setMessages] = useState([]);
-    const { name, background } = route.params;
+    const { name, background, fontColor } = route.params;
 
     useEffect(() => {
         navigation.setOptions({ title: name })
@@ -21,12 +21,11 @@ const Chat = ({ route, navigation }) => {
             },
             {
                 _id: 2,
-                text: 'This is a system message',
+                text: "You've entered the chat room",
                 createdAt: new Date(),
                 system: true,
             },
         ]);
-
     }, []);
 
     const onSend = (newMessages) => {
@@ -47,11 +46,33 @@ const Chat = ({ route, navigation }) => {
         />
     }
 
+    const renderSystemMessage = (props) => {
+        return (
+            <View style={styles.systemMessageContainer}>
+                <Text style={{ ...styles.systemMessageText, color: fontColor }}>{props.currentMessage.text}</Text>
+            </View>
+        );
+    };
+
+    const renderDay = (props) => {
+        // Only render the date for the first message
+        if (props.currentMessage._id === messages[messages.length - 1]._id) {
+            return (
+                <View>
+                    <Text style={{ ...styles.dateText, color: fontColor }}>{props.currentMessage.createdAt.toDateString()}</Text>
+                </View>
+            );
+        }
+        return null;
+    };
+
     return (
         <View style={{ ...styles.container, backgroundColor: background }}>
             <GiftedChat
                 messages={messages}
                 renderBubble={renderBubble}
+                renderSystemMessage={renderSystemMessage}
+                renderDay={renderDay}
                 onSend={messages => onSend(messages)}
                 user={{
                     _id: 1,
@@ -59,14 +80,27 @@ const Chat = ({ route, navigation }) => {
                 }}
             />
             {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+            {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
-    }
+        flex: 1,
+    },
+
+    systemMessageText: {
+        fontSize: 12,
+        textAlign: 'center',
+        marginBottom: 10
+    },
+
+    dateText: {
+        fontSize: 14,
+        textAlign: 'center',
+    },
+
 });
 
 export default Chat;
