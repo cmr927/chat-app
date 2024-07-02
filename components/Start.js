@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-    StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity,
+    StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Platform, KeyboardAvoidingView
 } from "react-native";
 
 // Define the Start component
@@ -9,6 +9,8 @@ const Start = ({ navigation }) => {
     const [name, setName] = useState("");
     // State to hold the chosen background color
     const [background, setBackground] = useState("");
+    // State to hold the correct font color for the chosen background color
+    const [fontColor, setfontColor] = useState("");
 
     return (
         <ImageBackground
@@ -30,48 +32,80 @@ const Start = ({ navigation }) => {
                     <View style={styles.colorButtonsContainer}>
                         {/* Render a TouchableOpacity for each color option */}
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, black"
+                            accessibilityHint="Choose chat background color, black"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#090C08" },
                                 background === "#090C08" && styles.selectedColor,
                             ]}
+
                             // Set the function to handle button press
-                            onPress={() => setBackground("#090C08")}
+                            onPress={() => {
+                                setBackground("#090C08")
+                                setfontColor("#757083")
+                            }}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, dark purple"
+                            accessibilityHint="Choose chat background color, dark purple"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#474056" },
                                 background === "#474056" && styles.selectedColor,
                             ]}
-                            onPress={() => setBackground("#474056")}
+                            onPress={() => {
+                                setBackground("#474056")
+                                setfontColor("#757083")
+                            }}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            //Change font color to #2f2d29!
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, blue-gray"
+                            accessibilityHint="Choose chat background color, blue-gray"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#8A95A5" },
                                 background === "#8A95A5" && styles.selectedColor,
                             ]}
-                            onPress={() => setBackground("#8A95A5")}
+                            onPress={() => {
+                                setBackground("#8A95A5")
+                                setfontColor("#2f2d29")
+                            }}
                         ></TouchableOpacity>
                         <TouchableOpacity
+                            //Change font color to #2f2d29!
+                            accessible={true}
+                            accessibilityLabel="Choose chat background color, light green"
+                            accessibilityHint="Choose chat background color, light green"
+                            accessibilityRole="button"
                             style={[
                                 styles.chooseColor,
                                 { backgroundColor: "#B9C6AE" },
                                 background === "#B9C6AE" && styles.selectedColor,
                             ]}
-                            onPress={() => setBackground("#B9C6AE")}
+                            onPress={() => {
+                                setBackground("#B9C6AE")
+                                setfontColor("#2f2d29")
+                            }}
                         ></TouchableOpacity>
                     </View>
                 </View>
 
                 {/* Render a TouchableOpacity for starting the chat */}
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name, background: background })}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name, background: background, fontColor: fontColor })}>
                     <Text style={styles.textButton}>Start Chatting
 
                     </Text>
 
                 </TouchableOpacity>
+                {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" /> : null}
             </View>
         </ImageBackground>
     );
@@ -155,6 +189,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         marginBottom: 10,
     },
+
 });
 
 export default Start;
