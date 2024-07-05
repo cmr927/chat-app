@@ -7,7 +7,8 @@ import {
     ImageBackground,
     TouchableOpacity,
     Platform,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from "react-native";
 import { getAuth, signInAnonymously } from "firebase/auth";
 
@@ -19,6 +20,7 @@ const Start = ({ navigation }) => {
     const [background, setBackground] = useState("");
     // State to hold the correct font color for the chosen background color
     const [fontColor, setfontColor] = useState("");
+    const auth = getAuth()
 
     const signInUser = () => {
         signInAnonymously(auth)

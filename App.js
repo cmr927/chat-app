@@ -5,6 +5,7 @@ import Chat from './components/Chat';
 // import from react
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LogBox } from 'react-native';
 
 //import from firebase
 import { initializeApp } from "firebase/app";
@@ -29,6 +30,9 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
+LogBox.ignoreLogs(["@firebase/auth: Auth (10.3.1)"]);
+LogBox.ignoreLogs(["Support for defaultProps will be removed from function components"]);
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -41,8 +45,9 @@ const App = () => {
         />
         <Stack.Screen
           name="Chat"
-          component={Chat}
-        />
+        >
+          {props => <Chat db={db} {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
