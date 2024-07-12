@@ -1,7 +1,8 @@
 //imports
+import CustomActions from './CustomActions';
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Platform, KeyboardAvoidingView, Text } from 'react-native';
-import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
+import { Bubble, GiftedChat, InputToolbar, renderActions } from "react-native-gifted-chat";
 import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -82,6 +83,7 @@ const Chat = ({ db, route, navigation, isConnected }) => {
     return (
         <View style={{ ...styles.container, backgroundColor: background }}>
             <GiftedChat
+                renderActions={renderCustomActions}
                 messages={messages}
                 renderInputToolbar={renderInputToolbar}
                 renderBubble={renderBubble}
