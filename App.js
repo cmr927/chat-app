@@ -1,3 +1,10 @@
+import { Alert, LogBox } from "react-native";
+
+LogBox.ignoreLogs(["@firebase/auth: Auth (10.12.3)"]);
+LogBox.ignoreLogs(["Support for defaultProps will be removed from function components"]);
+LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
+LogBox.ignoreLogs(["You are initializing Firebase Auth for React Native without providing AsyncStorage"])
+
 // import the screens
 import Start from './components/Start';
 import Chat from './components/Chat';
@@ -6,20 +13,25 @@ import Chat from './components/Chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// import functions for initializing firestore
+// import functions for initializing firebase
 import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+// import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useEffect } from 'react';
-import { Alert, LogBox } from "react-native";
+
+// import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+// const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+// });
 
 // Create the navigator
 const Stack = createNativeStackNavigator();
 
-LogBox.ignoreLogs(["@firebase/auth: Auth (10.3.1)"]);
-LogBox.ignoreLogs(["Support for defaultProps will be removed from function components"]);
-LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
+
 
 const App = () => {
   const connectionStatus = useNetInfo();
