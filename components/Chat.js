@@ -1,13 +1,17 @@
 //imports
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Platform, KeyboardAvoidingView, Text } from 'react-native';
+import { StyleSheet, View, Platform, KeyboardAvoidingView, TouchableOpacity, Text } from 'react-native';
 import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import MapView from 'react-native-maps';
+import { Audio } from "expo-av";
+import CustomActions from './CustomActions';
 
-const Chat = ({ db, route, navigation, isConnected }) => {
+const Chat = ({ db, route, navigation, isConnected, storage }) => {
     const [messages, setMessages] = useState([]);
     const { userID, name, background } = route.params;
+    let soundObject = null;
 
     useEffect(() => {
         let unsubMessages;
@@ -19,12 +23,9 @@ const Chat = ({ db, route, navigation, isConnected }) => {
                     const data = doc.data();
                     return {
                         _id: doc.id,
-                        text: data.text,
+                        ...data,
                         createdAt: data.createdAt.toDate(),
-                        user: {
-                            _id: data.user._id,
-                            name: data.user.name
-                        }
+
                     };
                 });
                 cacheMessages(newMessages);
@@ -36,6 +37,7 @@ const Chat = ({ db, route, navigation, isConnected }) => {
         //Clean up code
         return () => {
             if (unsubMessages) unsubMessages();
+            if (soundObject) soundObject.unloadAsync();
         };
     }, [isConnected]);
 
@@ -52,12 +54,17 @@ const Chat = ({ db, route, navigation, isConnected }) => {
         }
     };
 
-    const onSend = async (newMessages) => {
+    const onSend = (newMessages) => {
         try {
-            await addDoc(collection(db, "messages"), newMessages[0]);
+            addDoc(collection(db, "messages"), newMessages[0]);
         } catch (error) {
             console.log(error.message);
         }
+    };
+
+    const renderInputToolbar = (props) => {
+        if (isConnected === true) return <InputToolbar {...props} />;
+        else return null;
     };
 
     const renderBubble = (props) => (
@@ -74,21 +81,72 @@ const Chat = ({ db, route, navigation, isConnected }) => {
         />
     );
 
-    const renderInputToolbar = (props) => {
-        if (isConnected) return <InputToolbar {...props} />;
+    const renderCustomActions = (props) => {
+        return <CustomActions storage={storage} {...props} />;
+    };
+
+    const renderCustomView = (props) => {
+        const { currentMessage } = props;
+        if (currentMessage.location) {
+            return (
+                <MapView
+                    style={{
+                        width: 150,
+                        height: 100,
+                        borderRadius: 13,
+                        margin: 3
+                    }}
+                    region={{
+                        latitude: currentMessage.location.latitude,
+                        longitude: currentMessage.location.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                />
+            );
+        }
         return null;
+    };
+
+    const renderAudioBubble = (props) => {
+        return <View {...props}>
+            <TouchableOpacity
+                accessible={true}
+                accessibilityLabel="Play Sound"
+                accessibilityHint="Play Sound"
+                accessibilityRole="button"
+                style={{
+                    backgroundColor: "#FF0", borderRadius: 10, margin: 5
+                }}
+                onPress={async () => {
+                    if (soundObject) soundObject.unloadAsync();
+                    const { sound } = await Audio.Sound.createAsync({
+                        uri:
+                            props.currentMessage.audio
+                    });
+                    soundObject = sound;
+                    await sound.playAsync();
+                }}>
+                <Text style={{
+                    textAlign: "center", color: 'black', padding: 5
+                }}>Play Sound</Text>
+            </TouchableOpacity>
+        </View>
     };
 
     return (
         <View style={{ ...styles.container, backgroundColor: background }}>
             <GiftedChat
                 messages={messages}
-                renderInputToolbar={renderInputToolbar}
                 renderBubble={renderBubble}
+                renderInputToolbar={renderInputToolbar}
                 onSend={messages => onSend(messages)}
+                renderActions={renderCustomActions}
+                renderCustomView={renderCustomView}
+                renderMessageAudio={renderAudioBubble}
                 user={{
                     _id: userID,
-                    name: name
+                    name
                 }}
             />
             {Platform.OS === 'android' && <KeyboardAvoidingView behavior="height" />}
@@ -108,12 +166,18 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
 
-    dateText: {
-        fontSize: 14,
-        textAlign: 'center',
+    logoutButton: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        backgroundColor: "#C00",
+        padding: 10,
+        zIndex: 1
     },
-
+    logoutButtonText: {
+        color: "#FFF",
+        fontSize: 10
+    }
 });
-
 
 export default Chat;
