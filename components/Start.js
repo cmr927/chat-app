@@ -1,3 +1,4 @@
+//imports
 import { useState } from "react";
 import {
     StyleSheet,
@@ -49,7 +50,7 @@ const Start = ({ navigation }) => {
                 <View style={styles.chooseColorBox}>
                     <Text style={styles.chooseColorText}>Choose Background Color:</Text>
                     <View style={styles.colorButtonsContainer}>
-                        {/* Render a TouchableOpacity for each color option */}
+                        {/* Renders a TouchableOpacity for each color option */}
                         <TouchableOpacity
                             accessible={true}
                             accessibilityLabel="Choose chat background color, black"

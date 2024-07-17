@@ -5,8 +5,8 @@ import { Bubble, GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView from 'react-native-maps';
-import CustomActions from './CustomActions';
 import { Audio } from "expo-av";
+import CustomActions from './CustomActions';
 
 const Chat = ({ db, route, navigation, isConnected, storage }) => {
     const [messages, setMessages] = useState([]);
@@ -65,7 +65,7 @@ const Chat = ({ db, route, navigation, isConnected, storage }) => {
     const renderInputToolbar = (props) => {
         if (isConnected === true) return <InputToolbar {...props} />;
         else return null;
-    }
+    };
 
     const renderBubble = (props) => (
         <Bubble
@@ -128,12 +128,11 @@ const Chat = ({ db, route, navigation, isConnected, storage }) => {
                     await sound.playAsync();
                 }}>
                 <Text style={{
-                    textAlign: "center", color: 'black', padding:
-                        5
+                    textAlign: "center", color: 'black', padding: 5
                 }}>Play Sound</Text>
             </TouchableOpacity>
         </View>
-    }
+    };
 
     return (
         <View style={{ ...styles.container, backgroundColor: background }}>

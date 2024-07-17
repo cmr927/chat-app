@@ -1,10 +1,3 @@
-import { Alert, LogBox } from "react-native";
-
-LogBox.ignoreLogs(["@firebase/auth: Auth (10.12.3)"]);
-LogBox.ignoreLogs(["Support for defaultProps will be removed from function components"]);
-LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
-LogBox.ignoreLogs(["You are initializing Firebase Auth for React Native without providing AsyncStorage"])
-
 // import the screens
 import Start from './components/Start';
 import Chat from './components/Chat';
@@ -17,26 +10,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-// import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
-
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useEffect } from 'react';
-
-// import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-
-// const auth = initializeAuth(app, {
-//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-// });
+import { Alert, LogBox } from "react-native";
 
 // Create the navigator
 const Stack = createNativeStackNavigator();
 
-
+//ignores warnings in Expo
+LogBox.ignoreAllLogs();
 
 const App = () => {
   const connectionStatus = useNetInfo();
 
-  // Your web app's Firebase configuration
+  // My web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAvbxQpdMPzee2Inc9W3ACw5a3-wC6oswU",
     authDomain: "chat-app-d7d2c.firebaseapp.com",

@@ -1,3 +1,4 @@
+//imports
 import { TouchableOpacity, Text, View, StyleSheet, Alert } from "react-native";
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,11 +11,19 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
     const actionSheet = useActionSheet();
     let recordingObject = null;
 
+    //recording object gets unloaded from the memory in case the user started a recording session and closed the app
+    useEffect(() => {
+        return () => {
+            if (recordingObject) recordingObject.stopAndUnloadAsync();
+        }
+    }, []);
+
     const generateReference = (uri) => {
+        // gets the file name from the uri
         const timeStamp = (new Date()).getTime();
         const imageName = uri.split("/")[uri.split("/").length - 1];
         return `${userID}-${timeStamp}-${imageName}`;
-    }
+    };
 
     const onActionPress = () => {
         const options = ['Choose Picture From Library', 'Take Picture', 'Send Location', 'Record a Sound', 'Cancel'];
@@ -137,12 +146,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
             onSend({ audio: soundURL })
         });
     };
-    //recording object gets unloaded from the memory in case the user started a recording session and closed the app
-    useEffect(() => {
-        return () => {
-            if (recordingObject) recordingObject.stopAndUnloadAsync();
-        }
-    }, []);
+
 
     return (
         <TouchableOpacity
