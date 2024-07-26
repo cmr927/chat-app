@@ -31,27 +31,6 @@ and location data.
 ## Installation
 1. Clone the repository: git clone https://github.com/cmr927/chat-app
 2. Install required dependencies using ```npm install```
-  ```
-  "@expo/metro-runtime": "~3.2.1",
-    "@react-native-async-storage/async-storage": "1.23.1",
-    "@react-native-community/netinfo": "11.3.1",
-    "@react-navigation/native": "^6.1.17",
-    "@react-navigation/native-stack": "^6.9.26",
-    "expo": "~51.0.14",
-    "expo-image-picker": "^15.0.7",
-    "expo-location": "^17.0.1",
-    "expo-status-bar": "~1.12.1",
-    "firebase": "^10.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native": "0.74.3",
-    "react-native-gifted-chat": "^2.4.0",
-    "react-native-maps": "1.14.0",
-    "react-native-safe-area-context": "4.10.1",
-    "react-native-screens": "3.31.1",
-    "react-native-web": "~0.19.10",
-    "expo-av": "~14.0.6"
-  ```
 3. Google Firestore/Firebase
    - Create an account
    - Start a new project
