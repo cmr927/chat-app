@@ -38,7 +38,7 @@ and location data.
    - Activate storage
    - Change rules from ```'allow read, write: if false;'``` to ```'allow read, write: if true;'```
    - Update your firebaseConfig in your App.js file
-   - Start the Expo development server: ```npx expo start Usage```
+   - Start the Expo development server: ```npx expo start```
 ## Usage
 1. Running on an Emulator:
    - Ensure you have an Android or iOS emulator running
